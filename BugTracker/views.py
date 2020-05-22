@@ -26,7 +26,11 @@ def login_request(request):
             if user:
                 login(request, user)
                 return HttpResponseRedirect(reverse('homepage'))
-    form = LoginForm()
+            else:
+                messages.error(request, "Invalid credentials")
+                return HttpResponseRedirect(reverse('login'))
+    else:
+        form = LoginForm()
     return render(request, 'form.html', {"form": form})
 
 
