@@ -1,6 +1,10 @@
 from django import forms
 
 
+#  REFERENCES:
+#  https://simpleisbetterthancomplex.com/tutorial/2016/06/27/how-to-use-djangos-built-in-login-system.html
+
+
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=25, required=True)
     password = forms.CharField(max_length=100, required=True)
@@ -10,4 +14,5 @@ class LoginForm(forms.Form):
 
 
 class TicketForm(forms.Form):
-    pass
+    title = forms.CharField(max_length=30, required=True)
+    description = forms.CharField(widget=forms.Textarea, required=True)
