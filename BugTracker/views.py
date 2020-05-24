@@ -43,7 +43,6 @@ def login_request(request):
     return render(request, 'form.html', {"form": form})
 
 
-@login_required
 def logout_request(request):
     logout(request)
     messages.info(request, "Logged out successfully!")
@@ -51,13 +50,15 @@ def logout_request(request):
 
 
 @login_required
-def ticketdetail(request):
-    pass
+def ticketdetail(request, ticketid):
+    ticketinfo = Ticket.objects.get(id=ticketid)
+    return render(request, "ticket.html", {"ticketinfo": ticketinfo})
 
 
 @login_required
-def userinfo(request):
-    pass
+def userinfo(request, userid):
+    userinfo = MyUser.objects.all().filter(id=userid)
+    return render(request, "userinfo.html", {"userinfo": userinfo})
 
 
 @login_required
