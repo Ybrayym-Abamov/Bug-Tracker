@@ -2,7 +2,7 @@ from django.shortcuts import render, reverse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from BugTracker.forms import LoginForm, TicketForm
+from BugTracker.forms import LoginForm, TicketForm, EditTicketForm
 from BugTracker.models import Ticket, MyUser
 
 
@@ -56,44 +56,79 @@ def ticketdetail(request, ticketid):
 
 
 @login_required
-def userinfo(request, userid):
-    userinfo = MyUser.objects.all().filter(id=userid)
-    return render(request, "userinfo.html", {"userinfo": userinfo})
+def userinfo(request, filerid):
+    filer = MyUser.objects.get(id=filerid)
+    filerhistory = Ticket.objects.filter(ticketfiler=filer)
+    assigned = filerhistory.filter(status="Inp")
+    completed = filerhistory.filter(status="D")
+    reported = filerhistory.filter(status="N")
+    return render(request, 'userinfo.html', {'filer': filer, 'assigned': assigned, 'completed': completed, 'reported': reported})
 
 
 @login_required
-def createticket(request, filerid):
+def createticket(request):
     if request.method == "POST":
         form = TicketForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            # getting the id of the ticket filer
-            filer = MyUser.objects.get(id=filerid)
+            filer = request.user
             Ticket.objects.create(
                 title=data['title'],
                 description=data['description'],
-                usersubmited=filer
+                ticketfiler=filer
             )
             return HttpResponseRedirect(reverse('homepage'))
-    Form = TicketForm()
-    return render(request, 'form.html', {"Form": Form})
+    form = TicketForm()
+    return render(request, 'form.html', {"form": form})
 
 
 @login_required
-def assignticket(request):
-    pass
+def assignticket(request, userid, ticketid):
+    user = MyUser.objects.get(id=userid)
+    data = Ticket.objects.get(id=ticketid)
+    data.assigneduser = user
+    data.status = "InP"
+    data.save()
+    return HttpResponseRedirect(reverse('ticketdetail', args=(ticketid, )))
 
 
 @login_required
-def completedticket(request):
-    pass
+def completedticket(request, userid, ticketid):
+    user = MyUser.objects.get(id=userid)
+    data = Ticket.objects.get(id=ticketid)
+    data.completedticket = user
+    data.status = "D"
+    data.save()
+    return HttpResponseRedirect(reverse('ticketdetail', args=(ticketid, )))
 
 
 @login_required
-def invalidticket(request):
-    pass
+def invalidticket(request, userid, ticketid):
+    user = MyUser.objects.get(id=userid)
+    data = Ticket.objects.get(id=ticketid)
+    data.ticketinvalid = user
+    data.status = "InV"
+    data.save()
+    return HttpResponseRedirect(reverse('ticketdetail', args=(ticketid, )))
 
 
 @login_required
-def editableticket(request):
-    pass
+def editticket(request, ticketid):
+    ticket = Ticket.objects.get(id=ticketid)
+    if request.method == "POST":
+        form = EditTicketForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            ticket.title = data['title']
+            ticket.description = data['description']
+            ticket.status = data['status'],
+            ticket.assignedto = data['assignedto']
+            ticket.save()
+            return HttpResponseRedirect(reverse('ticketdetail', args=(ticketid, )))
+    form = EditTicketForm(initial={
+        'title': ticket.title,
+        'description': ticket.description,
+        'status': ticket.status,
+        'assignedto': ticket.assignedto,
+    })
+    return render(request, 'form.html', {"form": form})

@@ -123,3 +123,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'BugTracker.MyUser'
+
+LOGIN_URL = '/login/'

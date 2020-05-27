@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Bug Tracker</title>
+  </head>
+  <body>
+    <h1><a href="/">HOME</a></h1>
+    <h1><a href="/logout/">LOGOUT</a></h1>
+    <div align="center">
+        <h2>{{ticketinfo.title}}</h2>
+        <p>Description: {{ticketinfo.description}}</p>
+        <p>Ticket Status: {{ticketinfo.get_status_display}}</p>
+        <p>Reported by: <a href="/user/{{ticketinfo.ticketfiler}}">{{ticketinfo.ticketfiler}}</a>
+        <p>Date Submitted: {{ticketinfo.datetime}}</p>
+        <p>Assigned To: {{ticketinfo.assignedto}}</p>
+        {%if not ticketinfo.status == "InV" and not ticketinfo.status == "N"%}
+        {%if not ticketinfo.completedby%}
+            <p>Being worked on by: <a href="/user/{{ticketinfo.assignedto}}">{{ticketinfo.assignedto}}</a></p>
+        {%endif%}
+        {%endif%}
+        {% comment %} {% if not ticketinfo.status == "P"%}
+            <p>Finished by: <a href="/user/{{ticketinfo.completedby}}"> {{ticketinfo.completedby}}</a></p>
+        {%endif%}    {% endcomment %}
+        {%if not ticketinfo.assignedto%}
+            <a href="/ticketedit/{{ticketinfo.id}}/edit/">Edit Ticket</a> <br>
+            <a href="/ticket/{{ticketinfo.id}}/inprogress/{{user.id}}">Assign It To Yourself</a> <br>
+        {%if ticketinfo.status != "D" and ticketinfo.status != "InV"%}
+            {% comment %} <a href="/ticketedit/{{ticketinfo.id}}/edit/">Edit Ticket</a> {% endcomment %}
+            <a href="/ticketinvalid/{{ticketinfo.id}}/invalid/{{user.id}}">Mark Invalid</a> <br>
+            {% comment %} <a href="/ticketcomplete/{{ticketinfo.id}}/done/{{user.id}}">Complete Ticket</a> {% endcomment %}
+        {%endif%}
+        {%endif%}
+    </div>
+  </body>
+</html>

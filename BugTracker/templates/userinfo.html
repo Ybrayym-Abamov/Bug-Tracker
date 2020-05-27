@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Bug Tracker</title>
+  </head>
+  <body>
+    <h1><a href="/">HOME</a></h1>
+    <h1><a href="/logout/">LOGOUT</a></h1>
+    <div align="center">
+        <h1>The User - {{user}}</h1>
+        <div>
+            <h2><p>Reported Tickets:</p></h2>
+                {%for data in reported%}
+                    <p>Title: <a href="/filerinfo/{{data.id}}/">{{data.title}}</a></p>
+                    <p>Ticket Id: {{data.id}}</p>
+                    <p>Reported By: <a href="/filerinfo/{{filer.id}}">{{data.ticketfiler}}</a></p>
+                    <p>Date Submitted: {{data.datetime}}</p>
+                    <p>Status: {{data.status}}</p>
+                    <p>Assigned To: <a href="/ticketassignment/{{data.id}}/inprogress/{{data.user}}>/">{{data.assignedto}}</a></p>
+                {%endfor%}
+        </div>
+        <div>
+            <h2><p>In Progress Tickets:</p></h2>
+            {{data.title}}
+            {%for data in assigned%}
+                <p>Title: <a href="/ticketassignment/{{data.id}}/inprogress/{{data.user.id}}/">{{data.title}}</a></p>
+                <p>Ticket Id: {{data.id}}</p>
+                <p>Reported By: <a href="/filerinfo/{{filer.id}}">{{data.ticketfiler}}</a></p>
+                <p>Date Submitted: {{data.datetime}}</p>
+                <p>Status: {{data.status}}</p>
+                <p>Assigned To: <a href="/ticketassignment/{{data.id}}/inprogress/{{data.user}}/">{{data.assignedto}}</a></p>
+            {%endfor%}
+        </div>
+        <div>
+            <h2><p>Completed Tickets:</p></h2>
+            {%for data in completed%}
+                <p>Title: <a href="/ticketcomplete/{{data.id}}/">{{data.title}}</a></p>
+                <p>Ticket Id: {{data.id}}</p>
+                <p>Reported By: <a href="/filerinfo/{{filer.id}}">{{data.ticketfiler}}</a></p>
+                <p>Date Submitted: {{data.datetime}}</p>
+                <p>Status: {{data.status}}</p>
+                <p>Assigned To: <a href="/ticketassignment/{{data.id}}/inprogress/{{data.user}}>/">{{data.assignedto}}</a></p>
+            {%endfor%}
+        </div>
+    </div>
+  </body>
+</html>

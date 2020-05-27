@@ -10,7 +10,7 @@ from TheBTProject.settings import AUTH_USER_MODEL
 
 
 class Ticket(models.Model):
-    title = models.CharField(max_length=30, default=None)
+    title = models.CharField(max_length=100, default=None)
     datetime = models.DateTimeField(default=timezone.now)
     description = models.TextField(default=None)
     ticketfiler = models.ForeignKey(
