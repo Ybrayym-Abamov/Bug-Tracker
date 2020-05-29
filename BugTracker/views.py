@@ -13,8 +13,6 @@ from BugTracker.models import Ticket, MyUser
 
 @login_required
 def main(request):
-    #  TODO for later:
-    #  Order it by ticket status
     data = Ticket.objects.all()
     return render(request, 'main.html', {"data": data})
 
@@ -46,7 +44,7 @@ def login_request(request):
 def logout_request(request):
     logout(request)
     messages.info(request, "Logged out successfully!")
-    return HttpResponseRedirect(reverse('homepage'))
+    return HttpResponseRedirect(reverse('login'))
 
 
 @login_required
@@ -59,10 +57,12 @@ def ticketdetail(request, ticketid):
 def userinfo(request, filerid):
     filer = MyUser.objects.get(id=filerid)
     filerhistory = Ticket.objects.filter(ticketfiler=filer)
-    assigned = filerhistory.filter(status="Inp")
+    assigned = filerhistory.filter(status="InP")
     completed = filerhistory.filter(status="D")
     reported = filerhistory.filter(status="N")
-    return render(request, 'userinfo.html', {'filer': filer, 'assigned': assigned, 'completed': completed, 'reported': reported})
+    return render(request, 'userinfo.html', {'filerhistory': filerhistory,
+                  'filer': filer, 'assigned': assigned, 'completed': completed,
+                                             'reported': reported})
 
 
 @login_required
@@ -86,7 +86,7 @@ def createticket(request):
 def assignticket(request, userid, ticketid):
     user = MyUser.objects.get(id=userid)
     data = Ticket.objects.get(id=ticketid)
-    data.assigneduser = user
+    data.assignedticket = user
     data.status = "InP"
     data.save()
     return HttpResponseRedirect(reverse('ticketdetail', args=(ticketid, )))
@@ -96,7 +96,7 @@ def assignticket(request, userid, ticketid):
 def completedticket(request, userid, ticketid):
     user = MyUser.objects.get(id=userid)
     data = Ticket.objects.get(id=ticketid)
-    data.completedticket = user
+    data.doneticket = user
     data.status = "D"
     data.save()
     return HttpResponseRedirect(reverse('ticketdetail', args=(ticketid, )))
@@ -106,7 +106,7 @@ def completedticket(request, userid, ticketid):
 def invalidticket(request, userid, ticketid):
     user = MyUser.objects.get(id=userid)
     data = Ticket.objects.get(id=ticketid)
-    data.ticketinvalid = user
+    data.invalidticket = user
     data.status = "InV"
     data.save()
     return HttpResponseRedirect(reverse('ticketdetail', args=(ticketid, )))

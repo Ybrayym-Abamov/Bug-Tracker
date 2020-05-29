@@ -8,52 +8,56 @@
 
 
     <div align="center">
-        <h2>New Tickets</h2>
         {% for ticket in data %}
-            {%if ticket.status == "N"%}
-                <p>Title: <a href="/ticketinfo/{{ticket.id}}">{{ticket.title}}</a></p>
-                <p>Ticket Id: {{ticket.id}}</p>
-                <p>Reported By: <a href="filerinfo/{{ticket.id}}">{{ticket.ticketfiler}}</a></p>
-                <p>Date Submitted: {{ticket.datetime}}</p>
+            {%if "N" in ticket.status%}
+                <h2 align="center">New Ticket</h2>
+                <p align="center">Title: <a href="/ticketinfo/{{ticket.id}}/">{{ticket.title}}</a></p>
+                <p align="center">Ticket Id: {{ticket.id}}</p>
+                <p align="center">Reported By: <a href="filerinfo/{{ticket.ticketfiler.id}}">{{ticket.ticketfiler}}</a></p>
+                <p align="center">Date Submitted: {{ticket.datetime}}</p>
+                <h1 align="center">-------------------------------------------------------------------</h1>
     </div>
     {%endif%}
     {%endfor%}
 
 
     <div align="center">
-        <h2>In Progress Tickets</h2>
         {% for ticket in data %}
-            {%if ticket.status == "InP"%}
-                <p>Title: <a href="/ticketassignment/{{ticket.id}}">{{ticket.title}}</a></p>
-                <p>Ticket Id: {{ticket.id}}</p>
-                <p>Reported By: {{ticket.ticketfiler}}</p>
-                <p>Date Submitted: {{ticket.datetime}}</p>
+            {%if "InP" in ticket.status%}
+                <h2 align="center">In Progress Ticket</h2>
+                <p align="center">Title: <a href="/ticketinfo/{{ticket.id}}/">{{ticket.title}}</a></p>
+                <p align="center">Ticket Id: {{ticket.id}}</p>
+                <p align="center">Reported By: <a href="filerinfo/{{ticket.ticketfiler.id}}">{{ticket.ticketfiler}}</a></p>
+                <p align="center">Date Submitted: {{ticket.datetime}}</p>
+                <h1 align="center">-------------------------------------------------------------------</h1>
     </div>
     {%endif%}
     {%endfor%}
 
 
     <div align="center">
-        <h2>Completed Tickets</h2>
-            {% for ticket in data %}
-                {%if ticket.status == "D"%}
-                    <p>Title: <a href="/ticketcomplete/{{ticket.id}}">{{ticket.title}}</a></p>
-                    <p>Ticket Id: {{ticket.id}}</p>
-                    <p>Reported By: {{ticket.ticketfiler}}</p>
-                    <p>Date Submitted: {{ticket.datetime}}</p>
+        {% for ticket in data %}
+            {%if "D" in ticket.status%}
+                <h2 align="center">Completed Ticket</h2>
+                <p align="center">Title: <a href="/ticketinfo/{{ticket.id}}/">{{ticket.title}}</a></p>
+                <p align="center">Ticket Id: {{ticket.id}}</p>
+                <p align="center">Reported By: <a href="filerinfo/{{ticket.ticketfiler.id}}">{{ticket.ticketfiler}}</a></p>
+                <p align="center">Date Submitted: {{ticket.datetime}}</p>
+                <h1 align="center">-------------------------------------------------------------------</h1>
     </div>
     {%endif%}
     {%endfor%}
 
 
     <div align="center">
-        <h2>Invalid Tickets</h2>
             {% for ticket in data %}
-                {%if ticket.status == "InV"%}
-                    <p>Title: <a href="/ticketinvalid/{{ticket.id}}">{{ticket.title}}</a></p>
-                    <p>Ticket Id: {{ticket.id}}</p>
-                    <p>Reported By: {{ticket.ticketfiler}}</p>
-                    <p>Date Submitted: {{ticket.datetime}}</p>
+                {%if "InV" in ticket.status%}
+                    <h2 align="center">Invalid Ticket</h2>
+                    <p align="center">Title: <a href="/ticketinfo/{{ticket.id}}/">{{ticket.title}}</a></p>
+                    <p align="center">Ticket Id: {{ticket.id}}</p>
+                    <p align="center">Reported By: <a href="filerinfo/{{ticket.ticketfiler.id}}">{{ticket.ticketfiler}}</a></p>
+                    <p align="center">Date Submitted: {{ticket.datetime}}</p>
+                    <h1 align="center">-------------------------------------------------------------------</h1>
     </div>
     {%endif%}
     {%endfor%}
