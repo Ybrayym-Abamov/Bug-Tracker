@@ -22,8 +22,8 @@ class EditTicketForm(forms.ModelForm):
     class Meta:
         model = Ticket
         fields = [
-            'status',
+            # 'status',
             'description',
             'title',
-            'assignedto'
+            # 'assignedto'
         ]

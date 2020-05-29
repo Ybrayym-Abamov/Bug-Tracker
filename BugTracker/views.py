@@ -121,14 +121,14 @@ def editticket(request, ticketid):
             data = form.cleaned_data
             ticket.title = data['title']
             ticket.description = data['description']
-            ticket.status = data['status'],
-            ticket.assignedto = data['assignedto']
+            # ticket.status = data['status'],
+            # ticket.assignedto = data['assignedto']
             ticket.save()
             return HttpResponseRedirect(reverse('ticketdetail', args=(ticketid, )))
     form = EditTicketForm(initial={
         'title': ticket.title,
         'description': ticket.description,
-        'status': ticket.status,
-        'assignedto': ticket.assignedto,
+        # 'status': ticket.status,
+        # 'assignedto': ticket.assignedto,
     })
     return render(request, 'form.html', {"form": form})

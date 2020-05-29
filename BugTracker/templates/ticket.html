@@ -10,7 +10,7 @@
     <div align="center">
         <h2>{{ticketinfo.title}}</h2>
         <p>Description: {{ticketinfo.description}}</p>
-        <p>Ticket Status: {{ticketinfo.status}}</p>
+        <p>Ticket Status: {{ticketinfo.get_status_display}}</p>
         <p>Reported by: <a href="filerinfo/{{ticketinfo.ticketfiler}}">{{ticketinfo.ticketfiler}}</a></p>
         <p>Date Submitted: {{ticketinfo.datetime}}</p>
         <p>Assigned To: <a href="/ticketinfo/{{ticketinfo.assignedto}}">{{ticketinfo.assignedto}}</a></p>
@@ -18,10 +18,9 @@
             <p>Being worked on by: <a href="/user/{{ticketinfo.assignedto}}">{{ticketinfo.assignedto}}</a></p>
         {%endif%}
         {%if "D" in ticketinfo.status%}
-            <p>Finished by: <a>{{ticket.completedby}}</a></p>
+            <p>Finished by: <a>{{ticketinfo.completedby}}</a></p>
         {%endif%}
         {%if not ticketinfo.assignedto%}
-            <a href="/ticketedit/{{ticketinfo.id}}/edit/">Edit Ticket</a> <br>
             <a href="/ticketassignment/{{ticketinfo.id}}/inprogress/{{user.id}}">Assign It To Yourself</a> <br>
         {%endif%}
         {%if ticketinfo.status != "D" and ticketinfo.status != "InV"%}

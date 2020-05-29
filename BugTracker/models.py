@@ -24,7 +24,7 @@ class Ticket(models.Model):
         (NEW, 'New'),
         (INPROGRESS, 'Inprogress'),
         (DONE, 'Done'),
-        (INVALID, 'Invalid')
+        (INVALID, 'Invalid'),
     ]
     status = models.CharField(
         max_length=3, choices=TICKET_STATUS_CHOICES, default=NEW)
