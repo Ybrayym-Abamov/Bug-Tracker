@@ -14,14 +14,19 @@
         <p>Reported by: <a href="/filerinfo/{{ticketinfo.ticketfiler.id}}">{{ticketinfo.ticketfiler}}</a></p>
         <p>Date Submitted: {{ticketinfo.datetime}}</p>
         <p>Assigned To: {{ticketinfo.assignedto}}</p>
-        {%if not ticketinfo.completedby and ticketinfo.status != "InV" and ticketinfo.status != "N"%}
+        {%if not ticketinfo.completedby and ticketinfo.status != "InV" and ticketinfo.status != "N"%} {% comment%} If a ticket is in progress {% endcomment%}
             <p>Being worked on by: <a href="/filerinfo/{{ticketinfo.assignedto.id}}">{{ticketinfo.assignedto}}</a></p>
+            <a href="/ticketcomplete/{{ticketinfo.id}}/complete/{{user.id}}">Complete Ticket</a> <br>
+            <a href="/ticketinvalid/{{ticketinfo.id}}/invalid/{{user.id}}">Mark Invalid</a> <br>
+            <a href="/ticketedit/{{ticketinfo.id}}/edit/">Edit Ticket</a> <br>
         {%endif%}
-        {%if "D" in ticketinfo.status%}
-            <p>Finished by: <a>{{ticketinfo.completedby}}</a></p>
+        {%if "InV" not in ticketinfo.status and "N" not in ticketinfo.status and "InP" not in ticketinfo.status%} {% comment%} If a ticket is complete {% endcomment%}
+            <p>Fixed by: <a>{{ticketinfo.completedby}}</a></p>
+            <a href="/ticketedit/{{ticketinfo.id}}/edit/">Edit Ticket</a> <br>
         {%endif%}
-        {%if not ticketinfo.assignedto%}
+        {%if not ticketinfo.assignedto and not ticketinfo.completedby and "InV" not in ticketinfo.status%} {% comment%} If a ticket is new {% endcomment%}
             <a href="/ticketassignment/{{ticketinfo.id}}/inprogress/{{user.id}}">Assign It To Yourself</a> <br>
+            <a href="/ticketedit/{{ticketinfo.id}}/edit/">Edit Ticket</a> <br>
         {%endif%}
         {%if ticketinfo.status != "D" and ticketinfo.status != "InV"%}
             <a href="/ticketedit/{{ticketinfo.id}}/edit/">Edit Ticket</a> <br>
