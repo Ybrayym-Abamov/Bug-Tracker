@@ -11,11 +11,11 @@
         <h2>{{ticketinfo.title}}</h2>
         <p>Description: {{ticketinfo.description}}</p>
         <p>Ticket Status: {{ticketinfo.get_status_display}}</p>
-        <p>Reported by: <a href="filerinfo/{{ticketinfo.ticketfiler}}">{{ticketinfo.ticketfiler}}</a></p>
+        <p>Reported by: <a href="/filerinfo/{{ticketinfo.ticketfiler.id}}">{{ticketinfo.ticketfiler}}</a></p>
         <p>Date Submitted: {{ticketinfo.datetime}}</p>
-        <p>Assigned To: <a href="/ticketinfo/{{ticketinfo.assignedto}}">{{ticketinfo.assignedto}}</a></p>
+        <p>Assigned To: {{ticketinfo.assignedto}}</p>
         {%if not ticketinfo.completedby and ticketinfo.status != "InV" and ticketinfo.status != "N"%}
-            <p>Being worked on by: <a href="/user/{{ticketinfo.assignedto}}">{{ticketinfo.assignedto}}</a></p>
+            <p>Being worked on by: <a href="/filerinfo/{{ticketinfo.assignedto.id}}">{{ticketinfo.assignedto}}</a></p>
         {%endif%}
         {%if "D" in ticketinfo.status%}
             <p>Finished by: <a>{{ticketinfo.completedby}}</a></p>
@@ -25,8 +25,11 @@
         {%endif%}
         {%if ticketinfo.status != "D" and ticketinfo.status != "InV"%}
             <a href="/ticketedit/{{ticketinfo.id}}/edit/">Edit Ticket</a> <br>
+            <a href="/ticketcomplete/{{ticketinfo.id}}/complete/{{user.id}}">Complete Ticket</a> <br>
             <a href="/ticketinvalid/{{ticketinfo.id}}/invalid/{{user.id}}">Mark Invalid</a> <br>
-
+        {%endif%}
+        {% if "InP" in ticketinfo.status %}
+            <a href="/ticketcomplete/{{ticketinfo.id}}/complete/{{user.id}}">Complete Ticket</a> <br>
         {%endif%}
     </div>
   </body>

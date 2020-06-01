@@ -3,9 +3,15 @@
 <title> Bug Tracker </title>
 
 <div align="center">
+    <div align="right">
+    <h2>Total tickets: {{Total_count}}</h2>
+    <h2>New tickets: {{N_count}}</h2>
+    <h2>In progress tickets: {{InP_count}}</h2>
+    <h2>Completed tickets: {{D_count}}</h2>
+    <h2>Invalid tickets: {{InV_count}}</h2>
+    </div>
 
-    <h1><p><a href="/createticket/">Submit Ticket</a></p></h1>
-
+    <h1><p><a href="/createticket/">SUBMIT TICKET</a></p></h1>
 
     <div align="center">
         {% for ticket in data %}

@@ -13,8 +13,27 @@ from BugTracker.models import Ticket, MyUser
 
 @login_required
 def main(request):
-    data = Ticket.objects.all()
-    return render(request, 'main.html', {"data": data})
+    data = Ticket.objects.all().order_by("-datetime")
+    Total_count = Ticket.objects.count()
+    N_count = 0
+    InP_count = 0
+    D_count = 0
+    InV_count = 0
+    for ticket in data:
+        if ticket.status == "InP":
+            InP_count += 1
+        if ticket.status == "D":
+            D_count += 1
+        if ticket.status == "InV":
+            InV_count += 1
+        if ticket.status == "N":
+            N_count += 1
+    return render(request, 'main.html', {"data": data,
+                                         "Total_count": Total_count,
+                                         "InP_count": InP_count,
+                                         "N_count": N_count,
+                                         "D_count": D_count,
+                                         "InV_count": InV_count})
 
 
 def login_request(request):
@@ -26,9 +45,9 @@ def login_request(request):
                 request,
                 username=data['username'],
                 password=data['password'],
-                email=data['email'],
-                first_name=data['first_name'],
-                last_name=data['last_name']
+                # email=data['email'],
+                # first_name=data['first_name'],
+                # last_name=data['last_name']
             )
             if user:
                 login(request, user)
@@ -38,13 +57,13 @@ def login_request(request):
                 return HttpResponseRedirect(reverse('login'))
     else:
         form = LoginForm()
-    return render(request, 'form.html', {"form": form})
+    return render(request, 'login.html', {"form": form})
 
 
 def logout_request(request):
     logout(request)
     messages.info(request, "Logged out successfully!")
-    return HttpResponseRedirect(reverse('login'))
+    return HttpResponseRedirect(reverse('homepage'))
 
 
 @login_required
@@ -88,6 +107,7 @@ def assignticket(request, userid, ticketid):
     data = Ticket.objects.get(id=ticketid)
     data.assignedticket = user
     data.status = "InP"
+    data.assignedto = request.user
     data.save()
     return HttpResponseRedirect(reverse('ticketdetail', args=(ticketid, )))
 
