@@ -105,8 +105,8 @@ def createticket(request):
 def assignticket(request, userid, ticketid):
     user = MyUser.objects.get(id=userid)
     data = Ticket.objects.get(id=ticketid)
-    data.assignedticket = user
     data.status = "InP"
+    data.assignedticket = user
     data.assignedto = request.user
     data.save()
     return HttpResponseRedirect(reverse('ticketdetail', args=(ticketid, )))
@@ -116,8 +116,9 @@ def assignticket(request, userid, ticketid):
 def completedticket(request, userid, ticketid):
     user = MyUser.objects.get(id=userid)
     data = Ticket.objects.get(id=ticketid)
-    data.doneticket = user
     data.status = "D"
+    # data.doneticket = user
+    data.completedby = request.user
     data.save()
     return HttpResponseRedirect(reverse('ticketdetail', args=(ticketid, )))
 

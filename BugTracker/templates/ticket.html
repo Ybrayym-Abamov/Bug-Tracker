@@ -21,7 +21,7 @@
             <a href="/ticketedit/{{ticketinfo.id}}/edit/">Edit Ticket</a> <br>
         {%endif%}
         {%if "InV" not in ticketinfo.status and "N" not in ticketinfo.status and "InP" not in ticketinfo.status%} {% comment%} If a ticket is complete {% endcomment%}
-            <p>Fixed by: <a>{{ticketinfo.completedby}}</a></p>
+            <p>Fixed by: <a href="/filerinfo/{{ticketinfo.completedby.id}}">{{ticketinfo.completedby}}</a></p>
             <a href="/ticketedit/{{ticketinfo.id}}/edit/">Edit Ticket</a> <br>
             <a href="/ticketinvalid/{{ticketinfo.id}}/invalid/{{user.id}}">Mark Invalid</a> <br>
         {%endif%}
