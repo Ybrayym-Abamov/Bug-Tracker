@@ -2,7 +2,7 @@ from django.shortcuts import render, reverse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from BugTracker.forms import LoginForm, TicketForm, EditTicketForm
+from BugTracker.forms import LoginForm, TicketForm, EditTicketForm, SignUpForm
 from BugTracker.models import Ticket, MyUser
 
 
@@ -45,9 +45,6 @@ def login_request(request):
                 request,
                 username=data['username'],
                 password=data['password'],
-                # email=data['email'],
-                # first_name=data['first_name'],
-                # last_name=data['last_name']
             )
             if user:
                 login(request, user)
@@ -58,6 +55,22 @@ def login_request(request):
     else:
         form = LoginForm()
     return render(request, 'login.html', {"form": form})
+
+
+def signup_view(request):
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            user = MyUser.objects.create_user(
+                username=data['username'],
+                password=data['password'],
+            )
+            if user:
+                login(request, user)
+                return HttpResponseRedirect(reverse('login'))
+    form = SignUpForm()
+    return render(request, 'signup.html', {"form": form})
 
 
 def logout_request(request):
