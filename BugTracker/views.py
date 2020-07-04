@@ -2,6 +2,7 @@ from django.shortcuts import render, reverse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from BugTracker.forms import LoginForm, TicketForm, EditTicketForm, SignUpForm
 from BugTracker.models import Ticket, MyUser
 
@@ -57,7 +58,7 @@ def login_request(request):
     return render(request, 'login.html', {"form": form})
 
 
-@login_required
+@staff_member_required
 def signup_view(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
