@@ -57,6 +57,7 @@ def login_request(request):
     return render(request, 'login.html', {"form": form})
 
 
+@login_required
 def signup_view(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
